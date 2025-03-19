@@ -5,4 +5,15 @@ function generateToken(data){
  return token
 }
 
-module.exports = {generateToken}
+function verifyToken(token){
+   try{
+  
+    const decoded = jwt.verify(JSON.parse(token) , "testkey")
+    return decoded;
+   }
+   catch(err){
+    console.log(err)
+   }
+}
+
+module.exports = {generateToken , verifyToken}
