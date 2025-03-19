@@ -1,6 +1,6 @@
 const empIDgen = require("../Services/empIDgen")
 const workers = require("../Models/workers")
-const {generateToken} = require('../Services/jwtToken')
+const {generateToken  , verifyToken} = require('../Services/jwtToken')
 
 async function workerLogin(req , res){
     console.log("inlogin")
@@ -11,12 +11,13 @@ async function workerLogin(req , res){
         return res.json({status :'success' , token : token})
     }
     else{
+        console.log("NO creds")
         return res.json({
             status :"Credentials not found"
         })
     }
   }
-  catch(error){ return res.json({
+  catch(error){ console.log(error); return res.json({
     status :"Internal Server Error"
 })}  
    
@@ -53,6 +54,21 @@ async function workerRegister(req , res){
     
 }
 
+async function workerDetails(req, res){
+    const empID =  verifyToken(req.body.token)
+    try{
+        const details =  await workers.findOne({empID : empID})
+        if(details){return res.json(details)}
+        else { return res.json({status : "invalid"})}
+        
+    }
+    catch(err){
+        console.log(err)
+        return res.json({status : "invalid"})
+    }
+   
+}   
 
 
-module.exports = {workerLogin , workerRegister}
+
+module.exports = {workerLogin , workerRegister,workerDetails}

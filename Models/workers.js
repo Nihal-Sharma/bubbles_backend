@@ -6,7 +6,7 @@ const workerSchema = new mongoose.Schema({
   empID : String,
   vehicle : String,
   name : String,
-  Location : String,
+  location : String,
   isActive : Boolean
 })
 const workers = mongoose.model("workers" , workerSchema);
